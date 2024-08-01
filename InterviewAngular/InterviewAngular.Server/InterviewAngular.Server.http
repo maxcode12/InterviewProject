@@ -1,0 +1,6 @@
+@InterviewAngular.Server_HostAddress = http://localhost:5111
+
+GET {{InterviewAngular.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
