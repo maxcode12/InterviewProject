@@ -1,4 +1,4 @@
-﻿using InterviewAngular.Server.Enums;
+﻿using EBusiness.API.Enums;
 
 namespace EBusiness.API.Server.Models;
 public class Order

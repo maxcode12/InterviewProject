@@ -1,4 +1,6 @@
 using InterviewAngular.Server.Context;
+using InterviewAngular.Server.Interfaces;
+using InterviewAngular.Server.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,10 @@ builder.Services.AddSwaggerGen();
 //Add Database Dependencies
 builder.Services.AddDbContext<EBusinessDBContext>(opt=>
     opt.UseSqlServer(connectionString));
+
+//Add Repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAuthentication, Authentication>();
 
 var app = builder.Build();
 
