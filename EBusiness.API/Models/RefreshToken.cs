@@ -1,6 +1,6 @@
 ﻿using EBusiness.API.Server.Models;
 
-namespace EBusiness.API;
+namespace EBusiness.API.Models;
 
 public class RefreshToken
 {
