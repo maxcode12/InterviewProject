@@ -70,6 +70,7 @@ public class AuthenticateUser : IAuthenticateUser
         response.Id = useremail.Id;
         response.Email = useremail.Email;
         response.AccessToken = token;
+        response.RefreshToken = token;
         response.Success = true;
         response.Message = "Login Successful";
 
