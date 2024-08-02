@@ -1,10 +1,11 @@
 ﻿using EBusiness.API.Models;
 using EBusiness.API.Server.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EBusiness.API.Context;
 
-public class EBuisinessContextDB2024 : DbContext 
+public class EBuisinessContextDB2024 : IdentityDbContext<User> 
 {
     public EBuisinessContextDB2024(DbContextOptions<EBuisinessContextDB2024> options) : base(options)
     {
@@ -12,18 +13,15 @@ public class EBuisinessContextDB2024 : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<UserRole>()
-            .HasKey(ur => new { ur.UserId, ur.RoleId });
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(EBuisinessContextDB2024).Assembly); 
 
-        modelBuilder.Entity<UserRole>()
-            .HasOne(ur => ur.Users)
-            .WithMany(u => u.UserRoles)
-            .HasForeignKey(ur => ur.UserId);
-
-        modelBuilder.Entity<UserRole>()
-            .HasOne(ur => ur.Roles)
-            .WithMany(r => r.UserRoles)
-            .HasForeignKey(ur => ur.RoleId);
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasMany(e => e.Orders)
+                  .WithOne(o => o.User)
+                  .HasForeignKey(e => e.UserId);
+        });
 
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Email).IsUnique();
@@ -41,8 +39,8 @@ public class EBuisinessContextDB2024 : DbContext
                   .WithMany(b => b.Products)
                   .HasForeignKey(e => e.ProductBrandId);
             //entity.HasKey(pc => new { pc.Categories });
-            entity.HasMany(e => e.Categories)
-                  .WithMany(c => c.Products);
+            //entity.HasMany(e => e.Categories)
+            //      .WithMany(c => c.Products);
 
         });
 
@@ -94,8 +92,6 @@ public class EBuisinessContextDB2024 : DbContext
     }
 
     public DbSet<User> Users { get; set; }
-    public DbSet<Role> Roles { get; set; }
-    public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Order> Orders { get; set; }
